@@ -50,7 +50,7 @@ public class UserService {
         return convertToDTO(savedUser);
     }
 
-    public UserDTO updateUser(Integer id, User userDetails) {
+    public UserDTO updateUser(Integer id, UserDTO userDetails) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
@@ -74,7 +74,7 @@ public class UserService {
                 user.getUserId(),
                 user.getName(),
                 user.getEmail(),
-                null,
+                user.getPassword(),
                 user.getRole()
         );
     }
