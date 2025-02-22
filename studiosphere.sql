@@ -17,9 +17,11 @@ CREATE TABLE customer(
 -- Photographer Table
 CREATE TABLE photographer (
     photographer_id SERIAL PRIMARY KEY,
-    speciality VARCHAR(50),  -- Changed from ENUM to VARCHAR
-    category VARCHAR(255),   -- Changed from ENUM[] to VARCHAR (comma-separated values)
+    speciality VARCHAR(50),
+    category VARCHAR(255),
     portfolio TEXT,
+	available_to_work_in VARCHAR(255),
+    rating DECIMAL(2,1) CHECK (rating >= 0 AND rating <= 5),
     FOREIGN KEY (photographer_id) REFERENCES users(users_id) ON DELETE CASCADE
 );
 
@@ -34,7 +36,7 @@ CREATE TABLE admin (
 CREATE TABLE availability (
     photographer_id INT NOT NULL,
     available_date DATE NOT NULL,
-    status VARCHAR(50) DEFAULT 'available',  -- Changed from ENUM to VARCHAR
+    status VARCHAR(50) DEFAULT 'available',
     PRIMARY KEY(photographer_id, available_date),
     FOREIGN KEY (photographer_id) REFERENCES photographer(photographer_id) ON DELETE CASCADE
 );
@@ -46,9 +48,11 @@ CREATE TABLE booking (
     photographer_id INT NOT NULL,
     event_date DATE NOT NULL,
     event_location VARCHAR(255) NOT NULL,
-    booking_status VARCHAR(50) DEFAULT 'Pending',  -- Changed from ENUM to VARCHAR
+    booking_status VARCHAR(50) DEFAULT 'Pending',
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE,
-    FOREIGN KEY (photographer_id) REFERENCES photographer(photographer_id) ON DELETE CASCADE
+    FOREIGN KEY (photographer_id) REFERENCES photographer(photographer_id) ON DELETE CASCADE,
+	CONSTRAINT unique_booking UNIQUE (customer_id, photographer_id, event_date)
+
 );
 
 -- Review Table
