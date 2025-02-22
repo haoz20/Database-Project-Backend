@@ -54,12 +54,18 @@ public class PhotographerService {
         photographer.setSpeciality(photographerDTO.getSpeciality());
         photographer.setCategory(photographerDTO.getCategoryAsString());
         photographer.setPortfolio(photographerDTO.getPortfolio());
+        photographer.setAvailableToWorkIn(photographerDTO.getAvailableToWorkInAsString());
+        photographer.setRating(photographerDTO.getRating());
+
         user.setName(photographerDTO.getName());
         user.setEmail(photographerDTO.getEmail());
+
         photographerRepository.save(photographer);
         userRepository.save(user);
+
         return convertToDTO(photographer, user);
     }
+
 
     private PhotographerDTO convertToDTO(Photographer photographer, User user) {
         return new PhotographerDTO(
@@ -68,8 +74,11 @@ public class PhotographerService {
                 user.getEmail(),
                 photographer.getSpeciality(),
                 (photographer.getCategory() != null) ?
-                        Arrays.asList(photographer.getCategory().split(",")) : null, // ✅ Initialize properly
-                photographer.getPortfolio()
+                        Arrays.asList(photographer.getCategory().split(",")) : null,
+                photographer.getPortfolio(),
+                (photographer.getAvailableToWorkIn() != null) ?
+                        Arrays.asList(photographer.getAvailableToWorkIn().split(",")) : null,
+                photographer.getRating()
         );
     }
 

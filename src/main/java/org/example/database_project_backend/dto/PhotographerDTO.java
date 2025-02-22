@@ -17,10 +17,17 @@ public class PhotographerDTO {
     private Speciality speciality;
     private List<String> category;
     private String portfolio;
+    private List<String> availableToWorkIn;
+    private Double rating;
 
     @JsonIgnore
     public String getCategoryAsString() {
         return category != null ? String.join(",", category) : null;
+    }
+
+    @JsonIgnore
+    public String getAvailableToWorkInAsString() {
+        return availableToWorkIn != null ? String.join(",", availableToWorkIn) : null; // ✅ Convert List → String
     }
 
 }
