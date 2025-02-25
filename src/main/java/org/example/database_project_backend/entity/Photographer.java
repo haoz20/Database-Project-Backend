@@ -36,5 +36,8 @@ public class Photographer {
     @JoinColumn(name = "photographer_id")
     private User user;
 
+    @OneToMany(mappedBy = "photographer")
+    private List<Booking> bookings;
+
 
 }

@@ -15,4 +15,9 @@ public class Admin {
     private Integer adminId;
 
     private String permission;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @MapsId
+    @JoinColumn(name = "admin_id")
+    private User user;
 }

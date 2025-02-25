@@ -67,7 +67,6 @@ public class UserService {
         return userRepository.save(existingUser);
     }
 
-
     public void deleteUser(Integer id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
@@ -83,6 +82,7 @@ public class UserService {
                 user.getRole()
         );
     }
+
     private User convertToEntity(UserDTO userDTO) {
         return new User(
                 userDTO.getUserId(),
@@ -94,22 +94,21 @@ public class UserService {
     }
 
     private void addUserToRoleSpecificTable(User user) {
+        // Instead of manually setting the ID, we associate the User.
         switch (user.getRole()) {
             case CUSTOMER:
                 Customer customer = new Customer();
-                customer.setCustomerId(user.getUserId());
+                customer.setUser(user);
                 customerRepository.save(customer);
                 break;
             case PHOTOGRAPHER:
                 Photographer photographer = new Photographer();
-                photographer.setPhotographerId(user.getUserId());
-                // Set other photographer-specific fields here
+                photographer.setUser(user);
                 photographerRepository.save(photographer);
                 break;
             case ADMIN:
                 Admin admin = new Admin();
-                admin.setAdminId(user.getUserId());
-                // Set other admin-specific fields here
+                admin.setUser(user);
                 adminRepository.save(admin);
                 break;
         }
