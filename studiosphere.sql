@@ -80,8 +80,8 @@ CREATE TABLE issue
     reported_by       INT         NOT NULL,
     assigned_to       INT,
     description       TEXT        NOT NULL,
-    issue_type        VARCHAR(50) NOT NULL,      -- Changed from ENUM to VARCHAR
-    issue_status      VARCHAR(50) DEFAULT 'New', -- Changed from ENUM to VARCHAR
+    issue_type        VARCHAR(50) NOT NULL,
+    issue_status      VARCHAR(50) DEFAULT 'New',
     resolution_detail TEXT,
     reported_at       DATE,
     FOREIGN KEY (reported_by) REFERENCES customer (customer_id) ON DELETE CASCADE,
@@ -90,9 +90,9 @@ CREATE TABLE issue
 
 -- Insert Users
 INSERT INTO users (name, email, password, role)
-VALUES ('John Doe', 'john.doe@example.com', 'hashed_password', 'CUSTOMER'),
-       ('Jane Photographer', 'jane.photographer@example.com', 'hashed_password', 'PHOTOGRAPHER'),
-       ('Alice Admin', 'alice.admin@example.com', 'hashed_password', 'ADMIN');
+VALUES ('Siri', 'siri@example.com', 'siri', 'CUSTOMER'),
+       ('Sam', 'sam@example.com', 'sam', 'PHOTOGRAPHER'),
+       ('hao', 'hao@example.com', 'hao', 'ADMIN');
 
 -- Insert into Customer table (for user with id = 1)
 INSERT INTO customer (customer_id, studiosphere_points)
