@@ -51,7 +51,8 @@ public class BookingService {
         booking.setEventDate(bookingDTO.getEventDate());
         booking.setEventLocation(bookingDTO.getEventLocation());
         booking.setBookingStatus(bookingDTO.getBookingStatus() != null ? bookingDTO.getBookingStatus() : "Pending");
-
+        booking.setSpeciality(bookingDTO.getSpeciality());
+        booking.setCategory(bookingDTO.getCategory());
         Booking savedBooking = bookingRepository.save(booking);
         return convertToDTO(savedBooking);
     }
@@ -84,6 +85,39 @@ public class BookingService {
         bookingRepository.delete(booking);
     }
 
+    public List<BookingDTO> getBookingsByPhotographer(Integer photographerId) {
+        return bookingRepository.findByPhotographerPhotographerId(photographerId)
+                .stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    public List<BookingDTO> getBookingsByCustomer(Integer customerId) {
+        return bookingRepository.findByCustomerCustomerId(customerId)
+                .stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public BookingDTO confirmBooking(Integer bookingId, Integer photographerId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found with ID: " + bookingId));
+
+        // Optionally check if booking.getPhotographer().getPhotographerId() == photographerId
+        booking.setBookingStatus("Booked");
+        bookingRepository.save(booking);
+        return convertToDTO(booking);
+    }
+
+    @Transactional
+    public BookingDTO cancelBooking(Integer bookingId, Integer photographerId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found with ID: " + bookingId));
+
+        // Optionally check if booking.getPhotographer().getPhotographerId() == photographerId
+        booking.setBookingStatus("Cancelled");
+        bookingRepository.save(booking);
+        return convertToDTO(booking);
+    }
+
+
     private BookingDTO convertToDTO(Booking booking) {
         return new BookingDTO(
                 booking.getBookingId(),
@@ -91,7 +125,11 @@ public class BookingService {
                 booking.getPhotographer().getPhotographerId(),
                 booking.getEventDate(),
                 booking.getEventLocation(),
-                booking.getBookingStatus()
+                booking.getBookingStatus(),
+                booking.getSpeciality(),
+                booking.getCategory(),
+                booking.getCustomer().getUser().getName(),
+                booking.getPhotographer().getUser().getName()
         );
     }
 }

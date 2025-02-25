@@ -59,7 +59,6 @@ public class IssueService {
 
         issue.setIssueStatus(issueDTO.getIssueStatus());
         issue.setResolutionDetail(issueDTO.getResolutionDetail());
-        issue.setResolutionDate(issueDTO.getResolutionDate());
 
         return convertToDTO(issueRepository.save(issue));
     }
@@ -77,7 +76,10 @@ public class IssueService {
                 issue.getIssueType(),
                 issue.getIssueStatus(),
                 issue.getResolutionDetail(),
-                issue.getResolutionDate()
+                issue.getReportedAt(),
+                issue.getCustomerName(),
+                issue.getCustomerEmail()
         );
     }
+
 }

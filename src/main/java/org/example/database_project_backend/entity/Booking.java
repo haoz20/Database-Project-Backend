@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "booking")
 public class Booking {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id")
@@ -34,5 +33,12 @@ public class Booking {
 
     @Column(name = "booking_status", nullable = false)
     private String bookingStatus;
+
+    @Column(name = "speciality", nullable = false)
+    private String speciality;
+
+    @Column(name = "category", nullable = false)
+    private String category;
+
 }
 

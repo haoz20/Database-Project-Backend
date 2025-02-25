@@ -31,5 +31,10 @@ public class Photographer {
     @Column(name = "rating", nullable = true)
     private Double rating;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @MapsId
+    @JoinColumn(name = "photographer_id")
+    private User user;
+
 
 }

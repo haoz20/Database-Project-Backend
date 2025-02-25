@@ -16,6 +16,8 @@ public class IssueDTO {
     private String issueType;
     private String issueStatus;
     private String resolutionDetail;
-    private LocalDate resolutionDate;
+    private LocalDate reportedAt;
+    private String customerName;
+    private String customerEmail;
 }
 

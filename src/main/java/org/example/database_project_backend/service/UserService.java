@@ -50,18 +50,23 @@ public class UserService {
         return convertToDTO(savedUser);
     }
 
-    public UserDTO updateUser(Integer id, UserDTO userDetails) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    @Transactional
+    public User updateUser(Integer id, User userUpdates) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setName(userDetails.getName());
-        user.setEmail(userDetails.getEmail());
-        user.setPassword(userDetails.getPassword());
-        user.setRole(userDetails.getRole());
+        existingUser.setName(userUpdates.getName());
+        existingUser.setEmail(userUpdates.getEmail());
+        existingUser.setRole(userUpdates.getRole());
 
-        User updatedUser = userRepository.save(user);
-        return convertToDTO(updatedUser);
+        // Only update the password if a new value is provided
+        if (userUpdates.getPassword() != null && !userUpdates.getPassword().trim().isEmpty()) {
+            existingUser.setPassword(userUpdates.getPassword());
+        }
+
+        return userRepository.save(existingUser);
     }
+
 
     public void deleteUser(Integer id) {
         User user = userRepository.findById(id)

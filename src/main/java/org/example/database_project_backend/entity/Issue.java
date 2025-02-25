@@ -2,6 +2,7 @@ package org.example.database_project_backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.config.CustomEditorConfigurer;
 
 import java.time.LocalDate;
 
@@ -38,7 +39,23 @@ public class Issue {
     @Column(name = "resolution_detail", columnDefinition = "TEXT")
     private String resolutionDetail;
 
-    @Column(name = "resolution_date")
-    private LocalDate resolutionDate;
+    @Column(name = "reported_at")
+    private LocalDate reportedAt = LocalDate.now();
+
+    // Optional transient fields for convenience when converting to DTO
+    @Transient
+    private String customerName;
+
+    @Transient
+    private String customerEmail;
+
+    @PostLoad
+    public void populateTransientFields() {
+        if (reportedBy != null && reportedBy.getUser() != null) {
+            this.customerName = reportedBy.getUser().getName();
+            this.customerEmail = reportedBy.getUser().getEmail();
+        }
+    }
+
 }
 

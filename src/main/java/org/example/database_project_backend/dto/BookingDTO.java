@@ -15,4 +15,8 @@ public class BookingDTO {
     private LocalDate eventDate;
     private String eventLocation;
     private String bookingStatus;
+    private String speciality;
+    private String category;
+    private String customerName;
+    private String photographerName;
 }
